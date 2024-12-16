@@ -10,6 +10,9 @@ export class Bullet extends Component {
     update(deltaTime: number) {
         const postion = this.node.position;
         this.node.setPosition(postion.x, postion.y + this.speed * deltaTime, postion.z);
+        if (postion.x > 240 || postion.x < -240 || postion.y > 440 || postion.y < -440) {
+            this.node.destroy();
+        }
     }
 }
 
