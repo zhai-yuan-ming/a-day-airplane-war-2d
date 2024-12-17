@@ -5,5 +5,28 @@
       "height": 850,
       "width": 480
     }
+  },
+  "custom_joint_texture_layouts": [],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "enemy"
+      },
+      {
+        "index": 2,
+        "name": "player"
+      },
+      {
+        "index": 3,
+        "name": "bullet"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 0,
+      "1": 12,
+      "2": 2,
+      "3": 2
+    }
   }
 }

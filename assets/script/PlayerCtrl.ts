@@ -7,6 +7,9 @@ enum ShootType {
 }
 @ccclass('PlayerCtrl')
 export class PlayerCtrl extends Component {
+
+    @property
+    hp: number = 5;
     
     protected onLoad(): void {
         input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -17,6 +20,7 @@ export class PlayerCtrl extends Component {
     }
 
     onTouchMove(event: EventTouch) {
+        if (this.hp <= 0) return;
         const postion = this.node.position;
         let tagetPosition = new Vec3(postion.x + event.getDeltaX(), postion.y + event.getDeltaY(), postion.z)
         if (tagetPosition.x <= -240) {
@@ -46,6 +50,7 @@ export class PlayerCtrl extends Component {
     shootType: ShootType = ShootType.OneBullet;
 
     protected update(dt: number): void {
+        if (this.hp <= 0) return;
         switch(this.shootType) {
             case ShootType.OneBullet: 
                 this.oneBulletShoot(dt);
