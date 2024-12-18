@@ -26,8 +26,8 @@ export class GameBgCtrl extends Component {
     }
     
     changeBg(bg: Node) {
-        if (bg.position.y <= -850) {
-            bg.setPosition(bg.position.x, 850, bg.position.z);
+        if (bg.position.y <= -852) {
+            bg.setPosition(bg.position.x, bg.position.y + 1704, bg.position.z);
         }
     }
 }

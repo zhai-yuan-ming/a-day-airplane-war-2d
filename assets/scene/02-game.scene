@@ -923,8 +923,10 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "penetrate": false,
+    "invincible": 0,
     "hp": 5,
-    "shootRate": 0.4,
+    "shootRate": 0.5,
     "bulletParent": {
       "__id__": 25
     },
@@ -946,6 +948,11 @@
     "bullet2Position2": {
       "__id__": 22
     },
+    "anima": {
+      "__id__": 17
+    },
+    "animaHit": "player_hit",
+    "animaDown": "player_down",
     "_id": "0ck19RyohGlrEOYnPGMCgc"
   },
   {
@@ -1161,6 +1168,16 @@
     "enemy2CreateRate": 30,
     "enemy2Prefab": {
       "__uuid__": "f84ad9d2-9bcd-426b-a0e9-510b68218a8a",
+      "__expectedType__": "cc.Prefab"
+    },
+    "reward0CreateRate": 2,
+    "reward0Prefab": {
+      "__uuid__": "ebbed16a-4019-4bbd-951c-26d86a2020ab",
+      "__expectedType__": "cc.Prefab"
+    },
+    "reward1CreateRate": 10,
+    "reward1Prefab": {
+      "__uuid__": "db54ba2b-c6ff-4394-b1f3-cbac31022c2a",
       "__expectedType__": "cc.Prefab"
     },
     "_id": "5540/uneRBwrS8xJBiqVQ/"

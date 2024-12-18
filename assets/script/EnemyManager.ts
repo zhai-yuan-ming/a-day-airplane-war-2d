@@ -22,10 +22,24 @@ export class EnemyManager extends Component {
     @property(Prefab)
     enemy2Prefab: Prefab = null;
 
+    @property
+    reward0CreateRate: number = 10;
+
+    @property(Prefab)
+    reward0Prefab: Prefab = null;
+
+    @property
+    reward1CreateRate: number = 30;
+
+    @property(Prefab)
+    reward1Prefab: Prefab = null;
+
     start() {
         this.schedule(this.enemy0Create, this.enemy0CreateRate);
         this.schedule(this.enemy1Create, this.enemy1CreateRate);
         this.schedule(this.enemy2Create, this.enemy2CreateRate);
+        this.schedule(this.reward0Create, this.reward0CreateRate);
+        this.schedule(this.reward1Create, this.reward1CreateRate);
     }
 
     protected onDestroy(): void {
@@ -52,6 +66,18 @@ export class EnemyManager extends Component {
         const enemy2 = instantiate(this.enemy2Prefab);
         this.node.addChild(enemy2);
         enemy2.setPosition(math.randomRangeInt(-100, 100), 550, 0)
+    }
+
+    reward0Create() {
+        const reward = instantiate(this.reward0Prefab);
+        this.node.addChild(reward);
+        reward.setPosition(math.randomRangeInt(-215, 215), 450, 0)
+    }
+
+    reward1Create() {
+        const reward = instantiate(this.reward1Prefab);
+        this.node.addChild(reward);
+        reward.setPosition(math.randomRangeInt(-215, 215), 450, 0)
     }
 }
 

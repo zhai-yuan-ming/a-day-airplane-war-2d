@@ -1,8 +1,8 @@
 import { _decorator, Animation, Collider2D, Component, Contact2DType, IPhysics2DContact, log, Node, PhysicsSystem2D } from 'cc';
 const { ccclass, property } = _decorator;
 
-@ccclass('enemyCtrl')
-export class enemyCtrl extends Component {
+@ccclass('EnemyCtrl')
+export class EnemyCtrl extends Component {
 
     @property
     hp: number = 0;
