@@ -1,4 +1,5 @@
 import { _decorator, Animation, Collider2D, Component, Contact2DType, IPhysics2DContact, log, Node, PhysicsSystem2D } from 'cc';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('EnemyCtrl')
@@ -10,6 +11,9 @@ export class EnemyCtrl extends Component {
     @property
     speed: number = 250;
 
+    @property
+    score: number = 0;
+
     @property(Animation)
     anima: Animation = null;
 
@@ -20,8 +24,11 @@ export class EnemyCtrl extends Component {
 
     @property
     animaDown: string = "";
+    
+    private gm:GameManager = null;
 
     start() {
+        this.gm = GameManager.getInstance();
         // 注册单个碰撞体的回调函数
         this.collider = this.getComponent(Collider2D);
         if (this.collider) {
@@ -33,6 +40,7 @@ export class EnemyCtrl extends Component {
         // 只在两个碰撞体开始接触时被调用一次
         this.hp -= 1;
         if (this.hp <= 0) {
+            this.gm.addScore(this.score);
             this.anima.play(this.animaDown);
             if (this.collider) {
                 this.collider.enabled = false;

@@ -1,6 +1,7 @@
 import { _decorator, Collider2D, Component, Contact2DType, EventTouch, Input, input, instantiate, IPhysics2DContact, Node, Prefab, Vec3, Animation } from 'cc';
 import { EnemyCtrl } from './EnemyCtrl';
 import { RewardCtrl, RwdType } from './RewardCtrl';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
 enum ShootType {
@@ -14,11 +15,7 @@ export class PlayerCtrl extends Component {
     @property
     public penetrate: boolean = false;
 
-    @property
-    public invincible: number = 0;
-
-    @property
-    hp: number = 5;
+    private gm:GameManager = null;
     
     protected onLoad(): void {
         input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -29,7 +26,7 @@ export class PlayerCtrl extends Component {
     }
 
     onTouchMove(event: EventTouch) {
-        if (this.hp <= 0) return;
+        if (this.gm.getHp() <= 0) return;
         const postion = this.node.position;
         let tagetPosition = new Vec3(postion.x + event.getDeltaX(), postion.y + event.getDeltaY(), postion.z)
         if (tagetPosition.x <= -240) {
@@ -48,7 +45,7 @@ export class PlayerCtrl extends Component {
     }
 
     @property
-    shootRate: number = 0.4;
+    shootRate: number = 0.5;
 
     shootTime: number = 0;
 
@@ -59,7 +56,7 @@ export class PlayerCtrl extends Component {
     shootType: ShootType = ShootType.OneBullet;
 
     protected update(dt: number): void {
-        if (this.hp <= 0) return;
+        if (this.gm.getHp() <= 0) return;
         switch(this.shootType) {
             case ShootType.OneBullet: 
                 this.oneBulletShoot(dt);
@@ -71,10 +68,9 @@ export class PlayerCtrl extends Component {
                 this.ThreeBulletShoot(dt);
                 break;
         }
-        if (this.invincible > 0) {
-            this.invincible -= dt;
+        if (this.gm.invincible > 0) {
+            this.gm.addInvincible(-dt);
         }
-        
     }
 
     @property(Prefab)
@@ -144,7 +140,7 @@ export class PlayerCtrl extends Component {
     animaDown: string = "";
 
     protected start(): void {
-        
+        this.gm = GameManager.getInstance();
         // 注册单个碰撞体的回调函数
         this.collider = this.getComponent(Collider2D);
         if (this.collider) {
@@ -166,9 +162,9 @@ export class PlayerCtrl extends Component {
     }
 
     collisionEnemy() {
-        if (this.invincible > 0) return;
-        this.hp -= 1;
-        if (this.hp <= 0) {
+        if (this.gm.invincible > 0) return;
+        this.gm.addHp(-1);
+        if (this.gm.getHp() <= 0) {
             this.anima.play(this.animaDown);
             if (this.collider) {
                 this.collider.enabled = false;
@@ -177,7 +173,7 @@ export class PlayerCtrl extends Component {
                 this.node.setPosition(0, 0, 0);
             }, 1);
         } else {
-            this.invincible = 1;
+            this.gm.invincible = 1;
             this.anima.play(this.animaHit);
         }
     }
@@ -190,9 +186,16 @@ export class PlayerCtrl extends Component {
                     this.shootType = ShootType.TwoBullet;
                 } else if (this.shootType == ShootType.TwoBullet) {
                     this.shootType = ShootType.ThreeBullet;
+                } else {
+                    if (this.shootRate > 0.2) {
+                        this.shootRate -= 0.05;
+                    } else if (this.shootRate > 0.1) {
+                        this.shootRate -= 0.01;
+                    }
                 }
                 break;
             case RwdType.Bomb: 
+                this.gm.addBomb(1);
                 break;
         }
 
