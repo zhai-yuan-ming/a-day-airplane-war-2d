@@ -16,6 +16,8 @@ export class PlayerCtrl extends Component {
     public penetrate: boolean = false;
 
     private gm:GameManager = null;
+
+    private isPause:boolean = false;
     
     protected onLoad(): void {
         input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -26,6 +28,7 @@ export class PlayerCtrl extends Component {
     }
 
     onTouchMove(event: EventTouch) {
+        if (this.isPause) return;
         if (this.gm.getHp() <= 0) return;
         const postion = this.node.position;
         let tagetPosition = new Vec3(postion.x + event.getDeltaX(), postion.y + event.getDeltaY(), postion.z)
@@ -42,6 +45,14 @@ export class PlayerCtrl extends Component {
             tagetPosition.y = 380;
         }
         this.node.position = tagetPosition;
+    }
+    
+    onPauseClick() {
+        this.isPause = true;
+    }
+
+    onResumeClick() {
+        this.isPause = false;
     }
 
     @property
@@ -171,7 +182,8 @@ export class PlayerCtrl extends Component {
             }
             this.scheduleOnce(function(){
                 this.node.setPosition(0, 0, 0);
-            }, 1);
+                this.gm.gameOver();
+            }, 3);
         } else {
             this.gm.invincible = 1;
             this.anima.play(this.animaHit);

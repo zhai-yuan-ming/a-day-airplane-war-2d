@@ -1,4 +1,5 @@
 import { _decorator, Component, instantiate, math, Node, Prefab } from 'cc';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('EnemyManager')
@@ -34,7 +35,18 @@ export class EnemyManager extends Component {
     @property(Prefab)
     reward1Prefab: Prefab = null;
 
+    private gm:GameManager = null;
+
     start() {
+        this.gm = GameManager.getInstance();
+        this.startAllSchedule();
+    }
+
+    protected onDestroy(): void {
+        this.unAllSchedule();
+    }
+
+    startAllSchedule() {
         this.schedule(this.enemy0Create, this.enemy0CreateRate);
         this.schedule(this.enemy1Create, this.enemy1CreateRate);
         this.schedule(this.enemy2Create, this.enemy2CreateRate);
@@ -42,12 +54,45 @@ export class EnemyManager extends Component {
         this.schedule(this.reward1Create, this.reward1CreateRate);
     }
 
-    protected onDestroy(): void {
+    unAllSchedule() {
         this.unschedule(this.enemy0Create);
+        this.unschedule(this.enemy1Create);
+        this.unschedule(this.enemy2Create);
+        this.unschedule(this.reward0Create);
+        this.unschedule(this.reward1Create);
+    }
+
+    initSchedule() { 
+        this.enemy0CreateRate = 1 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy0CreateRate <= 0.1) {
+            this.enemy0CreateRate = 0.1;
+        }
+        this.enemy1CreateRate = 5 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy1CreateRate <= 0.5) {
+            this.enemy1CreateRate = 0.5;
+        }
+        this.enemy2CreateRate = 30 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy2CreateRate <= 1) {
+            this.enemy2CreateRate = 1;
+        }
+        this.reward0CreateRate = 30 * (1 - this.gm.getLv() * 0.01);
+        if (this.reward0CreateRate <= 3) {
+            this.reward0CreateRate = 3;
+        }
+        this.reward1CreateRate = 30 * (1 - this.gm.getLv() * 0.01);
+        if (this.reward1CreateRate <= 3) {
+            this.reward1CreateRate = 3;
+        }
+        this.unAllSchedule();
+        this.startAllSchedule();
     }
     
     update(deltaTime: number) {
-        
+        if (this.gm.getLv() >= 100) return;
+        if ((this.gm.getScore() / 1000) >= this.gm.getLv()) {
+            this.gm.addLv(1);
+            this.initSchedule();
+        }
     }
 
     enemy0Create() {

@@ -1,4 +1,5 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, director, Node } from 'cc';
+import { PlayerCtrl } from './PlayerCtrl';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -10,14 +11,16 @@ export class GameManager extends Component {
         return this.instance;
     }
 
-    @property
     private hp: number = 5;
 
-    @property
     private bombNumber: number = 0;
 
-    @property
     private score: number = 0;
+
+    private enemyLv: number = 1;
+
+    @property(PlayerCtrl)
+    player: PlayerCtrl = null;
 
     @property
     invincible: number = 0;
@@ -31,6 +34,21 @@ export class GameManager extends Component {
 
     update(deltaTime: number) {
         
+    }
+    
+    onPauseClick() {
+        director.pause();
+        this.player.onPauseClick();
+    }
+
+    onResumeClick() {
+        director.resume();
+        this.player.onResumeClick();
+    }
+
+    gameOver() {
+        this.onPauseClick();
+        this.node.emit("gameOver", 999, this.score);
     }
 
     public addInvincible(num: number) {
@@ -75,6 +93,19 @@ export class GameManager extends Component {
     public getScore() {
         return this.score;
     }
+
+    public addLv(num: number) {
+        this.enemyLv += num;
+        if (this.enemyLv <= 0) {
+            this.enemyLv = 0;
+        }
+        this.node.emit("changeLv");
+    }
+
+    public getLv() {
+        return this.enemyLv;
+    }
+
 }
 
 
