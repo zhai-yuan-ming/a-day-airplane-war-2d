@@ -1,5 +1,6 @@
-import { _decorator, Component, director, Node } from 'cc';
+import { _decorator, AudioClip, Component, director, Node } from 'cc';
 import { PlayerCtrl } from './PlayerCtrl';
+import { AudioMgr } from './AudioMgr';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -15,7 +16,8 @@ export class GameManager extends Component {
 
     private bombNumber: number = 0;
 
-    private score: number = 0;
+    @property
+    score: number = 0;
 
     private enemyLv: number = 1;
 
@@ -25,11 +27,18 @@ export class GameManager extends Component {
     @property
     invincible: number = 0;
 
+    @property(AudioClip)
+    gameMusic:AudioClip = null;
+    
+    @property(AudioClip)
+    useBombMus:AudioClip = null;
+
     protected onEnable(): void {
         GameManager.instance = this;
     }
 
     start() {
+        AudioMgr.inst.play(this.gameMusic, 0.2);
     }
 
     update(deltaTime: number) {
@@ -38,17 +47,29 @@ export class GameManager extends Component {
     
     onPauseClick() {
         director.pause();
+        AudioMgr.inst.pause();
         this.player.onPauseClick();
     }
 
     onResumeClick() {
+        director.resume();
+        AudioMgr.inst.resume();
+        this.player.onResumeClick();
+    }
+
+    onResumeClickWithOutMus() {
         director.resume();
         this.player.onResumeClick();
     }
 
     gameOver() {
         this.onPauseClick();
-        this.node.emit("gameOver", 999, this.score);
+        let bhs = localStorage.getItem("bestScore");
+        let bs = 0;
+        if (bhs) {
+            bs = parseInt(bhs, 10);
+        }
+        this.node.emit("gameOver", bs, this.score);
     }
 
     public addInvincible(num: number) {
@@ -59,8 +80,18 @@ export class GameManager extends Component {
     }
 
     public addBomb(num: number) {
+        if (this.bombNumber < 0) {
+            this.bombNumber = 0;
+        }
         this.bombNumber += num;
-        if (this.bombNumber <= 0) {
+        this.node.emit("changeBomb");
+    }
+
+    public useBomb(num: number) {
+        if (this.bombNumber > 0) {
+            this.bombNumber -= num;
+            AudioMgr.inst.playOneShot(this.useBombMus, 0.1)
+        } else {
             this.bombNumber = 0;
         }
         this.node.emit("changeBomb");
@@ -106,6 +137,11 @@ export class GameManager extends Component {
         return this.enemyLv;
     }
 
+    removeEnemy(enemy: Node) {
+        if (enemy) {
+            this.node.emit("removeEnemy", enemy);
+        }
+    }
 }
 
 

@@ -1,7 +1,8 @@
-import { _decorator, Collider2D, Component, Contact2DType, EventTouch, Input, input, instantiate, IPhysics2DContact, Node, Prefab, Vec3, Animation } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, EventTouch, Input, input, instantiate, IPhysics2DContact, Node, Prefab, Vec3, Animation, AudioClip } from 'cc';
 import { EnemyCtrl } from './EnemyCtrl';
 import { RewardCtrl, RwdType } from './RewardCtrl';
 import { GameManager } from './GameManager';
+import { AudioMgr } from './AudioMgr';
 const { ccclass, property } = _decorator;
 
 enum ShootType {
@@ -14,6 +15,18 @@ export class PlayerCtrl extends Component {
 
     @property
     public penetrate: boolean = false;
+
+    @property(AudioClip)
+    getThingMus: AudioClip = null;
+
+    @property(AudioClip)
+    oneBulletMus: AudioClip = null;
+
+    @property(AudioClip)
+    twoBulletMus: AudioClip = null;
+
+    @property(AudioClip)
+    downMus: AudioClip = null;
 
     private gm:GameManager = null;
 
@@ -93,6 +106,7 @@ export class PlayerCtrl extends Component {
     oneBulletShoot(dt: number) {
         this.shootTime += dt;
         if (this.shootTime >= this.shootRate) {
+            AudioMgr.inst.playOneShot(this.oneBulletMus, 0.1);
             this.shootTime = 0;
             const bullet1 = instantiate(this.bullet1Prefab);
             this.bulletParent.addChild(bullet1);
@@ -112,6 +126,7 @@ export class PlayerCtrl extends Component {
     twoBulletShoot(dt: number) {
         this.shootTime += dt;
         if (this.shootTime >= this.shootRate) {
+            AudioMgr.inst.playOneShot(this.twoBulletMus, 0.1);
             this.shootTime = 0;
             const bullet1 = instantiate(this.bullet2Prefab);
             const bullet2 = instantiate(this.bullet2Prefab);
@@ -125,6 +140,7 @@ export class PlayerCtrl extends Component {
     ThreeBulletShoot(dt: number) {
         this.shootTime += dt;
         if (this.shootTime >= this.shootRate) {
+            AudioMgr.inst.playOneShot(this.twoBulletMus, 0.1);
             this.shootTime = 0;
             const bullet0 = instantiate(this.bullet1Prefab);
             const bullet1 = instantiate(this.bullet2Prefab);
@@ -176,12 +192,12 @@ export class PlayerCtrl extends Component {
         if (this.gm.invincible > 0) return;
         this.gm.addHp(-1);
         if (this.gm.getHp() <= 0) {
+            AudioMgr.inst.playOneShot(this.downMus, 0.2);
             this.anima.play(this.animaDown);
             if (this.collider) {
                 this.collider.enabled = false;
             }
             this.scheduleOnce(function(){
-                this.node.setPosition(0, 0, 0);
                 this.gm.gameOver();
             }, 3);
         } else {
@@ -191,6 +207,7 @@ export class PlayerCtrl extends Component {
     }
 
     collisionReward(otherCollider: Collider2D) {
+        AudioMgr.inst.playOneShot(this.getThingMus, 0.2);
         const rewardCtrlVal = otherCollider.getComponent(RewardCtrl);
         switch(rewardCtrlVal.rwdType) {
             case RwdType.TwoBullet:

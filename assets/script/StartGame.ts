@@ -1,8 +1,13 @@
-import { _decorator, Component, director, Node } from 'cc';
+import { _decorator, AudioClip, Component, director, Node } from 'cc';
+import { AudioMgr } from './AudioMgr';
 const { ccclass, property } = _decorator;
 
 @ccclass('start')
 export class start extends Component {
+
+    @property(AudioClip)
+    btnMus: AudioClip = null;
+    
     start() {
 
     }
@@ -12,6 +17,7 @@ export class start extends Component {
     }
 
     public startGame() {
+        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
         director.loadScene("02-game");
     }
 }

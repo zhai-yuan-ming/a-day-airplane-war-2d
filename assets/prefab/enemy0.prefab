@@ -285,6 +285,10 @@
     },
     "animaHit": "",
     "animaDown": "enemy0_down",
+    "downMus": {
+      "__uuid__": "c7bfb191-7112-479e-a66f-ac7452689434",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": ""
   },
   {

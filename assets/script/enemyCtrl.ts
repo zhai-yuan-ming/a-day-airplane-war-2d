@@ -1,5 +1,6 @@
-import { _decorator, Animation, Collider2D, Component, Contact2DType, IPhysics2DContact, log, Node, PhysicsSystem2D } from 'cc';
+import { _decorator, Animation, AudioClip, Collider2D, Component, Contact2DType, IPhysics2DContact, log, Node, PhysicsSystem2D } from 'cc';
 import { GameManager } from './GameManager';
+import { AudioMgr } from './AudioMgr';
 const { ccclass, property } = _decorator;
 
 @ccclass('EnemyCtrl')
@@ -24,6 +25,9 @@ export class EnemyCtrl extends Component {
 
     @property
     animaDown: string = "";
+
+    @property(AudioClip)
+    downMus: AudioClip = null;
     
     private gm:GameManager = null;
 
@@ -40,14 +44,8 @@ export class EnemyCtrl extends Component {
         // 只在两个碰撞体开始接触时被调用一次
         this.hp -= 1;
         if (this.hp <= 0) {
-            this.gm.addScore(this.score);
-            this.anima.play(this.animaDown);
-            if (this.collider) {
-                this.collider.enabled = false;
-            }
-            this.scheduleOnce(function(){
-                this.node.destroy();
-            }, 1);
+            AudioMgr.inst.playOneShot(this.downMus, 0.1);
+            this.enemyDead();
         } else {
             this.anima.play(this.animaHit);
         }
@@ -59,12 +57,29 @@ export class EnemyCtrl extends Component {
         const postion = this.node.position;
         this.node.setPosition(postion.x, postion.y - move, postion.z);
         if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
-            this.node.destroy();
+            this.enemyDestroy();
         }
     }
 
     protected onDestroy(): void {
         this.collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+    }
+    
+    enemyDead() {
+        this.gm.addScore(this.score);
+        this.anima.play(this.animaDown);
+        if (this.collider) {
+            this.collider.enabled = false;
+        }
+        this.scheduleOnce(function(){
+            this.enemyDestroy();
+        }, 1);
+
+    }
+
+    enemyDestroy() {
+        this.gm.removeEnemy(this.node);
+        this.node.destroy();
     }
 }
 

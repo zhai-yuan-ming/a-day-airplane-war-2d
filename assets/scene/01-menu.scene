@@ -974,6 +974,10 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "btnMus": {
+      "__uuid__": "82015270-cd87-4425-802c-c18f19d8cc7b",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": "c37L3CCGdBDqm5KsvEDh5z"
   },
   {

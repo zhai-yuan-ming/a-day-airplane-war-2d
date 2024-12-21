@@ -26,7 +26,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 107
+      "__id__": 109
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -57,7 +57,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 108
+      "__id__": 110
     },
     "_id": "27996009-242f-4e22-914d-89d3435d8374"
   },
@@ -930,6 +930,22 @@
     "_enabled": true,
     "__prefab": null,
     "penetrate": false,
+    "getThingMus": {
+      "__uuid__": "151c875a-829a-4e11-948e-3fe4604b9bae",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "oneBulletMus": {
+      "__uuid__": "600918d8-7329-47de-8493-d8ba1a04a219",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "twoBulletMus": {
+      "__uuid__": "600918d8-7329-47de-8493-d8ba1a04a219",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "downMus": {
+      "__uuid__": "0eaf0cd9-158e-4eed-8193-58cae2fe927d",
+      "__expectedType__": "cc.AudioClip"
+    },
     "shootRate": 0.5,
     "bulletParent": {
       "__id__": 25
@@ -1174,7 +1190,7 @@
       "__uuid__": "f84ad9d2-9bcd-426b-a0e9-510b68218a8a",
       "__expectedType__": "cc.Prefab"
     },
-    "reward0CreateRate": 30,
+    "reward0CreateRate": 10,
     "reward0Prefab": {
       "__uuid__": "ebbed16a-4019-4bbd-951c-26d86a2020ab",
       "__expectedType__": "cc.Prefab"
@@ -1184,6 +1200,7 @@
       "__uuid__": "db54ba2b-c6ff-4394-b1f3-cbac31022c2a",
       "__expectedType__": "cc.Prefab"
     },
+    "enemyList": [],
     "_id": "5540/uneRBwrS8xJBiqVQ/"
   },
   {
@@ -1241,10 +1258,19 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "score": 0,
     "player": {
       "__id__": 24
     },
-    "invincible": 0,
+    "invincible": 3,
+    "gameMusic": {
+      "__uuid__": "6b318720-56ef-4189-9966-bf03e51919a5",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "useBombMus": {
+      "__uuid__": "9c55eef3-3d07-4dee-b82d-844b78b33aa2",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": "0c4sicXnFNtp4qaDgO3MXF"
   },
   {
@@ -1334,13 +1360,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 104
-      },
-      {
-        "__id__": 105
-      },
-      {
         "__id__": 106
+      },
+      {
+        "__id__": 107
+      },
+      {
+        "__id__": 108
       }
     ],
     "_prefab": null,
@@ -1498,7 +1524,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 103
+        "__id__": 105
       }
     ],
     "_prefab": null,
@@ -3432,16 +3458,16 @@
         "__id__": 93
       },
       {
-        "__id__": 97
+        "__id__": 98
       }
     ],
     "_active": false,
     "_components": [
       {
-        "__id__": 101
+        "__id__": 103
       },
       {
-        "__id__": 102
+        "__id__": 104
       }
     ],
     "_prefab": null,
@@ -3860,7 +3886,11 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 97
+      }
+    ],
     "_interactable": true,
     "_transition": 3,
     "_normalColor": {
@@ -3906,6 +3936,16 @@
     "_id": "9axQF8s0pOE7wjD18/z4HS"
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 39
+    },
+    "component": "",
+    "_componentId": "81148gx39FOSYX+NjIFpMFE",
+    "handler": "onRestartClick",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.Node",
     "_name": "quit-btn",
     "_objFlags": 0,
@@ -3917,13 +3957,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 98
-      },
-      {
         "__id__": 99
       },
       {
         "__id__": 100
+      },
+      {
+        "__id__": 101
       }
     ],
     "_prefab": null,
@@ -3962,7 +4002,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 97
+      "__id__": 98
     },
     "_enabled": true,
     "__prefab": null,
@@ -3984,7 +4024,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 97
+      "__id__": 98
     },
     "_enabled": true,
     "__prefab": null,
@@ -4023,11 +4063,15 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 97
+      "__id__": 98
     },
     "_enabled": true,
     "__prefab": null,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 102
+      }
+    ],
     "_interactable": true,
     "_transition": 3,
     "_normalColor": {
@@ -4065,9 +4109,19 @@
     "_duration": 0.1,
     "_zoomScale": 1.2,
     "_target": {
-      "__id__": 97
+      "__id__": 98
     },
     "_id": "31B4/LZTBJG7S3X9XOAtJU"
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 39
+    },
+    "component": "",
+    "_componentId": "81148gx39FOSYX+NjIFpMFE",
+    "handler": "onQuitClick",
+    "customEventData": ""
   },
   {
     "__type__": "cc.UITransform",
@@ -4167,6 +4221,10 @@
     "curScoreLabel": {
       "__id__": 92
     },
+    "btnMus": {
+      "__uuid__": "82015270-cd87-4425-802c-c18f19d8cc7b",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": "8a9XaXd0JNxrXTae2EU69Q"
   },
   {
@@ -4248,28 +4306,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 109
-    },
-    "shadows": {
-      "__id__": 110
-    },
-    "_skybox": {
       "__id__": 111
     },
-    "fog": {
+    "shadows": {
       "__id__": 112
     },
-    "octree": {
+    "_skybox": {
       "__id__": 113
     },
-    "skin": {
+    "fog": {
       "__id__": 114
     },
-    "lightProbeInfo": {
+    "octree": {
       "__id__": 115
     },
-    "postSettings": {
+    "skin": {
       "__id__": 116
+    },
+    "lightProbeInfo": {
+      "__id__": 117
+    },
+    "postSettings": {
+      "__id__": 118
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

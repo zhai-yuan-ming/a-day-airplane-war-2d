@@ -1,5 +1,6 @@
-import { _decorator, Component, Label, Node} from 'cc';
+import { _decorator, AudioClip, Component, director, Label, Node} from 'cc';
 import { GameManager } from './GameManager';
+import { AudioMgr } from './AudioMgr';
 const { ccclass, property } = _decorator;
 
 @ccclass('UIManager')
@@ -31,6 +32,9 @@ export class UIManager extends Component {
 
     @property(Label)
     curScoreLabel: Label = null;
+
+    @property(AudioClip)
+    btnMus: AudioClip = null;
 
     gm: GameManager = null;
 
@@ -67,21 +71,45 @@ export class UIManager extends Component {
     }
 
     onPauseClick() {
+        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
         this.gm.onPauseClick();
         this.pauseBtn.active = false;
         this.resumeBtn.active = true;
     }
 
     onResumeClick() {
+        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
         this.gm.onResumeClick();
         this.pauseBtn.active = true;
         this.resumeBtn.active = false;
     }
 
     gameOver(bestScore:number, curScore:number) {
+        this.refreshBestScore(bestScore, curScore);
         this.gameoverUi.active = true;
+        if (bestScore < curScore) {
+            bestScore = curScore;
+        }
         this.bestScoreLabel.string = bestScore.toString();
         this.curScoreLabel.string = curScore.toString();
+    }
+
+    refreshBestScore(bestScore: number, curScore: number) {
+        if (curScore > bestScore) {
+            localStorage.setItem("bestScore", curScore.toString());
+        }
+    }
+
+    onRestartClick() {
+        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
+        director.loadScene(director.getScene().name);
+        this.gm.onResumeClick();
+    }
+
+    onQuitClick() {
+        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
+        director.loadScene("01-menu");
+        this.gm.onResumeClickWithOutMus();
     }
 }
 
