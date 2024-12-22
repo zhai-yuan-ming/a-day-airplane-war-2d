@@ -43,6 +43,7 @@ export class UIManager extends Component {
         this.hpNumLabel.string = this.gm.getHp().toString();
         this.scoreNumLabel.string = this.gm.getScore().toString();
         this.lvNumLabel.string = this.gm.getLv().toString();
+        this.bombNumLabel.string = this.gm.getBomb().toString();
         this.gm.node.on("changeBomb", this.changeBomb, this);
         this.gm.node.on("changeHp", this.changeHp, this);
         this.gm.node.on("changeScore", this.changeScore, this);

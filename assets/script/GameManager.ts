@@ -14,7 +14,7 @@ export class GameManager extends Component {
 
     private hp: number = 5;
 
-    private bombNumber: number = 0;
+    private bombNumber: number = 1;
 
     @property
     score: number = 0;
