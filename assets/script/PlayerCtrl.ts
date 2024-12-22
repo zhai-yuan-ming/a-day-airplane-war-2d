@@ -99,6 +99,9 @@ export class PlayerCtrl extends Component {
         if (this.gm.invincible > 0) {
             this.gm.addInvincible(-dt);
         }
+        if (this.shootType != ShootType.FiveBullet && this.gm.getLv() >= 40) {
+            this.shootType = ShootType.FiveBullet;
+        }
     }
 
     @property(Prefab)
@@ -257,7 +260,7 @@ export class PlayerCtrl extends Component {
                 } else {
                     if (this.shootRate > 0.2) {
                         this.shootRate -= 0.05;
-                    } else if (this.shootRate > 0.1) {
+                    } else if (this.shootRate > 0.15) {
                         this.shootRate -= 0.01;
                     }
                 }
