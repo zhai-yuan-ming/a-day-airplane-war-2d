@@ -1,4 +1,4 @@
-import { _decorator, Animation, AudioClip, Collider2D, Component, Contact2DType, IPhysics2DContact, log, Node, PhysicsSystem2D } from 'cc';
+import { _decorator, Animation, AudioClip, Collider2D, Component, Contact2DType, IPhysics2DContact, log, math, Node, PhysicsSystem2D } from 'cc';
 import { GameManager } from './GameManager';
 import { AudioMgr } from './AudioMgr';
 const { ccclass, property } = _decorator;
@@ -44,7 +44,7 @@ export class EnemyCtrl extends Component {
         // 只在两个碰撞体开始接触时被调用一次
         this.hp -= 1;
         if (this.hp <= 0) {
-            AudioMgr.inst.playOneShot(this.downMus, 0.1);
+            AudioMgr.inst.playOneShot(this.downMus, 1);
             this.enemyDead();
         } else {
             this.anima.play(this.animaHit);
@@ -55,9 +55,22 @@ export class EnemyCtrl extends Component {
         if (this.hp <= 0) return;
         const move = deltaTime * this.speed;
         const postion = this.node.position;
-        this.node.setPosition(postion.x, postion.y - move, postion.z);
-        if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
-            this.enemyDestroy();
+        const rotation = this.node.getRotation();
+        if (rotation.z > 0) {
+            this.node.setPosition(postion.x + move, postion.y, postion.z);
+            if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
+                this.enemyDestroy();
+            }
+        } else if (rotation.z == 0) {
+            this.node.setPosition(postion.x, postion.y - move, postion.z);
+            if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
+                this.enemyDestroy();
+            }
+        } else if (rotation.z < 0) {
+            this.node.setPosition(postion.x - move, postion.y, postion.z);
+            if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
+                this.enemyDestroy();
+            }
         }
     }
 

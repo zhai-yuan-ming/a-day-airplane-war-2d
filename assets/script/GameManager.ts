@@ -57,11 +57,6 @@ export class GameManager extends Component {
         this.player.onResumeClick();
     }
 
-    onResumeClickWithOutMus() {
-        director.resume();
-        this.player.onResumeClick();
-    }
-
     gameOver() {
         this.onPauseClick();
         let bhs = localStorage.getItem("bestScore");

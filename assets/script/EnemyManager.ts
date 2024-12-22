@@ -26,6 +26,42 @@ export class EnemyManager extends Component {
     enemy2Prefab: Prefab = null;
 
     @property
+    enemy3CreateRate: number = 10;
+
+    @property(Prefab)
+    enemy3Prefab: Prefab = null;
+
+    @property
+    enemy4CreateRate: number = 50;
+
+    @property(Prefab)
+    enemy4Prefab: Prefab = null;
+
+    @property
+    enemy5CreateRate: number = 300;
+
+    @property(Prefab)
+    enemy5Prefab: Prefab = null;
+
+    @property
+    enemy6CreateRate: number = 10;
+
+    @property(Prefab)
+    enemy6Prefab: Prefab = null;
+
+    @property
+    enemy7CreateRate: number = 50;
+
+    @property(Prefab)
+    enemy7Prefab: Prefab = null;
+
+    @property
+    enemy8CreateRate: number = 300;
+
+    @property(Prefab)
+    enemy8Prefab: Prefab = null;
+
+    @property
     reward0CreateRate: number = 10;
 
     @property(Prefab)
@@ -59,6 +95,37 @@ export class EnemyManager extends Component {
         this.schedule(this.enemy2Create, this.enemy2CreateRate);
         this.schedule(this.reward0Create, this.reward0CreateRate);
         this.schedule(this.reward1Create, this.reward1CreateRate);
+        this.start345();
+        this.start678();
+    }
+
+    start345() {
+        if (this.gm.getLv() < 40) return;
+        this.schedule(this.enemy3Create, this.enemy3CreateRate);
+        this.schedule(this.enemy4Create, this.enemy4CreateRate);
+        this.schedule(this.enemy5Create, this.enemy5CreateRate);
+
+    }
+
+    start678() {
+        if (this.gm.getLv() < 80) return;
+        this.schedule(this.enemy6Create, this.enemy6CreateRate);
+        this.schedule(this.enemy7Create, this.enemy7CreateRate);
+        this.schedule(this.enemy8Create, this.enemy8CreateRate);
+    }
+
+    stop345() {
+        if (this.gm.getLv() < 40) return;
+        this.unschedule(this.enemy3Create);
+        this.unschedule(this.enemy4Create);
+        this.unschedule(this.enemy5Create);
+    }
+
+    stop678() {
+        if (this.gm.getLv() < 80) return;
+        this.unschedule(this.enemy6Create);
+        this.unschedule(this.enemy7Create);
+        this.unschedule(this.enemy8Create);
     }
 
     unAllSchedule() {
@@ -67,6 +134,8 @@ export class EnemyManager extends Component {
         this.unschedule(this.enemy2Create);
         this.unschedule(this.reward0Create);
         this.unschedule(this.reward1Create);
+        this.stop345();
+        this.stop678();
     }
 
     private initFlag: number = 0;
@@ -75,16 +144,40 @@ export class EnemyManager extends Component {
         if (this.gm.getLv() / 10 <= this.initFlag) return;
         this.initFlag += 1;
         this.enemy0CreateRate = 1 * (1 - this.gm.getLv() * 0.01);
-        if (this.enemy0CreateRate <= 0.1) {
+        if (this.enemy0CreateRate <= 0.5) {
             this.enemy0CreateRate = 0.1;
         }
         this.enemy1CreateRate = 5 * (1 - this.gm.getLv() * 0.01);
-        if (this.enemy1CreateRate <= 0.5) {
-            this.enemy1CreateRate = 0.5;
+        if (this.enemy1CreateRate <= 1) {
+            this.enemy1CreateRate = 1;
         }
         this.enemy2CreateRate = 15 * (1 - this.gm.getLv() * 0.01);
-        if (this.enemy2CreateRate <= 1.5) {
-            this.enemy2CreateRate = 1.5;
+        if (this.enemy2CreateRate <= 2) {
+            this.enemy2CreateRate = 2;
+        }
+        this.enemy3CreateRate = 10 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy3CreateRate <= 1) {
+            this.enemy3CreateRate = 1;
+        }
+        this.enemy4CreateRate = 50 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy4CreateRate <= 2) {
+            this.enemy4CreateRate = 2;
+        }
+        this.enemy5CreateRate = 150 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy5CreateRate <= 5) {
+            this.enemy5CreateRate = 5;
+        }
+        this.enemy6CreateRate = 10 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy6CreateRate <= 1) {
+            this.enemy6CreateRate = 1;
+        }
+        this.enemy7CreateRate = 50 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy7CreateRate <= 2) {
+            this.enemy7CreateRate = 2;
+        }
+        this.enemy8CreateRate = 150 * (1 - this.gm.getLv() * 0.01);
+        if (this.enemy8CreateRate <= 5) {
+            this.enemy8CreateRate = 5;
         }
         this.reward0CreateRate = 10 * (1 - this.gm.getLv() * 0.01);
         if (this.reward0CreateRate <= 3) {
@@ -156,6 +249,48 @@ export class EnemyManager extends Component {
         this.node.addChild(enemy2);
         enemy2.setPosition(math.randomRangeInt(-100, 100), 550, 0)
         this.enemyList.push(enemy2);
+    }
+
+    enemy3Create() {
+        const enemy3 = instantiate(this.enemy3Prefab);
+        this.node.addChild(enemy3);
+        enemy3.setPosition(-300, math.randomRangeInt(-350, 350), 0)
+        this.enemyList.push(enemy3);
+    }
+
+    enemy4Create() {
+        const enemy4 = instantiate(this.enemy4Prefab);
+        this.node.addChild(enemy4);
+        enemy4.setPosition(-300, math.randomRangeInt(-350, 350), 0)
+        this.enemyList.push(enemy4);
+    }
+
+    enemy5Create() {
+        const enemy5 = instantiate(this.enemy5Prefab);
+        this.node.addChild(enemy5);
+        enemy5.setPosition(-400, math.randomRangeInt(-100, 350), 0)
+        this.enemyList.push(enemy5);
+    }
+
+    enemy6Create() {
+        const enemy6 = instantiate(this.enemy6Prefab);
+        this.node.addChild(enemy6);
+        enemy6.setPosition(300, math.randomRangeInt(-350, 350), 0)
+        this.enemyList.push(enemy6);
+    }
+
+    enemy7Create() {
+        const enemy7 = instantiate(this.enemy7Prefab);
+        this.node.addChild(enemy7);
+        enemy7.setPosition(300, math.randomRangeInt(-350, 350), 0)
+        this.enemyList.push(enemy7);
+    }
+
+    enemy8Create() {
+        const enemy8 = instantiate(this.enemy8Prefab);
+        this.node.addChild(enemy8);
+        enemy8.setPosition(400, math.randomRangeInt(-100, 350), 0)
+        this.enemyList.push(enemy8);
     }
 
     reward0Create() {

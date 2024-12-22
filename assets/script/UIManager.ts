@@ -71,14 +71,14 @@ export class UIManager extends Component {
     }
 
     onPauseClick() {
-        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
+        AudioMgr.inst.playOneShot(this.btnMus, 1);
         this.gm.onPauseClick();
         this.pauseBtn.active = false;
         this.resumeBtn.active = true;
     }
 
     onResumeClick() {
-        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
+        AudioMgr.inst.playOneShot(this.btnMus, 1);
         this.gm.onResumeClick();
         this.pauseBtn.active = true;
         this.resumeBtn.active = false;
@@ -101,15 +101,15 @@ export class UIManager extends Component {
     }
 
     onRestartClick() {
-        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
+        AudioMgr.inst.playOneShot(this.btnMus, 1);
         director.loadScene(director.getScene().name);
         this.gm.onResumeClick();
     }
 
     onQuitClick() {
-        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
+        AudioMgr.inst.playOneShot(this.btnMus, 1);
         director.loadScene("01-menu");
-        this.gm.onResumeClickWithOutMus();
+        this.gm.onResumeClick();
     }
 }
 

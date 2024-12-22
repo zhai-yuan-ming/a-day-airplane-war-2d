@@ -17,7 +17,7 @@ export class start extends Component {
     }
 
     public startGame() {
-        AudioMgr.inst.playOneShot(this.btnMus, 0.2);
+        AudioMgr.inst.playOneShot(this.btnMus, 1);
         director.loadScene("02-game");
     }
 }
