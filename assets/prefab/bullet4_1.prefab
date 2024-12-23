@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "bullet2",
+    "_name": "bullet4_1",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "bullet2",
+    "_name": "bullet4_1",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -41,16 +41,16 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 25,
-      "y": -320,
+      "x": -30,
+      "y": -370,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0,
-      "w": 1
+      "z": 0.38268343236508984,
+      "w": 0.9238795325112867
     },
     "_lscale": {
       "__type__": "cc.Vec3",
@@ -64,7 +64,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": 45.000000000000014
     },
     "_id": ""
   },

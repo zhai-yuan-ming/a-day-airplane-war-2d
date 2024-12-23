@@ -1,7 +1,7 @@
-import { _decorator, AudioClip, Component, input, Input, instantiate, math, Node, Prefab } from 'cc';
+import { _decorator, CCFloat, Component, input, Input, instantiate, math, Node, Prefab } from 'cc';
 import { GameManager } from './GameManager';
 import { EnemyCtrl } from './EnemyCtrl';
-import { AudioMgr } from './AudioMgr';
+import { GameUtil } from './GameUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('EnemyManager')
@@ -62,24 +62,15 @@ export class EnemyManager extends Component {
     enemy8Prefab: Prefab = null;
 
     @property
-    reward0CreateRate: number = 10;
-
-    @property(Prefab)
-    reward0Prefab: Prefab = null;
-
-    @property
-    reward1CreateRate: number = 30;
-
-    @property(Prefab)
-    reward1Prefab: Prefab = null;
-
-    @property
     rewardCreateRate: number = 10;
 
     @property([Prefab])
     rewardList: Prefab[] = [];
 
-    @property([Node])
+    @property([CCFloat])
+    rewardRate: number[] = [];
+
+    @property([Node]) 
     enemyList: Node[] = [];
 
     private gm:GameManager = null;
@@ -99,8 +90,6 @@ export class EnemyManager extends Component {
         this.schedule(this.enemy0Create, this.enemy0CreateRate);
         this.schedule(this.enemy1Create, this.enemy1CreateRate);
         this.schedule(this.enemy2Create, this.enemy2CreateRate);
-        // this.schedule(this.reward0Create, this.reward0CreateRate);
-        // this.schedule(this.reward1Create, this.reward1CreateRate);
         this.schedule(this.rewardCreate, this.rewardCreateRate);
         this.start345();
         this.start678();
@@ -139,8 +128,6 @@ export class EnemyManager extends Component {
         this.unschedule(this.enemy0Create);
         this.unschedule(this.enemy1Create);
         this.unschedule(this.enemy2Create);
-        // this.unschedule(this.reward0Create);
-        // this.unschedule(this.reward1Create);
         this.unschedule(this.rewardCreate);
         this.stop345();
         this.stop678();
@@ -187,14 +174,6 @@ export class EnemyManager extends Component {
         if (this.enemy8CreateRate <= 5) {
             this.enemy8CreateRate = 5;
         }
-        // this.reward0CreateRate = 10 * (1 - this.gm.getLv() * 0.01);
-        // if (this.reward0CreateRate <= 3) {
-        //     this.reward0CreateRate = 3;
-        // }
-        // this.reward1CreateRate = 10 * (1 - this.gm.getLv() * 0.01);
-        // if (this.reward1CreateRate <= 3) {
-        //     this.reward1CreateRate = 3;
-        // }
         this.rewardCreateRate = 10 * (1 - this.gm.getLv() * 0.01);
         if (this.rewardCreateRate <= 3) {
             this.rewardCreateRate = 3;
@@ -305,22 +284,10 @@ export class EnemyManager extends Component {
         this.enemyList.push(enemy8);
     }
 
-    reward0Create() {
-        const reward = instantiate(this.reward0Prefab);
-        this.node.addChild(reward);
-        reward.setPosition(math.randomRangeInt(-215, 215), 450, 0)
-    }
-
-    reward1Create() {
-        const reward = instantiate(this.reward1Prefab);
-        this.node.addChild(reward);
-        reward.setPosition(math.randomRangeInt(-215, 215), 450, 0)
-    }
-
     rewardCreate() {
         if (this.rewardList.length <= 0) return;
-        let index = math.randomRangeInt(0, this.rewardList.length);
-        const reward = instantiate(this.rewardList[index]);
+        let rewardPrafab = GameUtil.inst.randomRage(this.rewardList, this.rewardRate);
+        const reward = instantiate(rewardPrafab);
         this.node.addChild(reward);
         reward.setPosition(math.randomRangeInt(-215, 215), 450, 0)
     }

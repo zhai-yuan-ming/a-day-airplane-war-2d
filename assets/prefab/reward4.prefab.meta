@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "fdc8ad6f-6d46-413e-9d69-bff878d8e180",
+  "uuid": "13eab294-1898-4ccb-b77d-4cbd789dcb93",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "bullet3"
+    "syncNodeName": "reward4"
   }
 }

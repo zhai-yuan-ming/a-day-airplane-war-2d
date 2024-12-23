@@ -9,7 +9,8 @@ enum ShootType {
     OneBullet,
     TwoBullet,
     ThreeBullet,
-    FiveBullet
+    FiveBullet,
+    SevenBullet
 }
 @ccclass('PlayerCtrl')
 export class PlayerCtrl extends Component {
@@ -29,10 +30,10 @@ export class PlayerCtrl extends Component {
     @property(AudioClip)
     downMus: AudioClip = null;
 
-    private gm:GameManager = null;
+    private gm: GameManager = null;
 
-    private isPause:boolean = false;
-    
+    private isPause: boolean = false;
+
     protected onLoad(): void {
         input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
     }
@@ -60,7 +61,7 @@ export class PlayerCtrl extends Component {
         }
         this.node.position = tagetPosition;
     }
-    
+
     onPauseClick() {
         this.isPause = true;
     }
@@ -78,12 +79,12 @@ export class PlayerCtrl extends Component {
     bulletParent: Node = null;
 
     @property
-    shootType: ShootType = ShootType.OneBullet;
+    shootType: ShootType = ShootType.SevenBullet;
 
     protected update(dt: number): void {
         if (this.gm.getHp() <= 0) return;
-        switch(this.shootType) {
-            case ShootType.OneBullet: 
+        switch (this.shootType) {
+            case ShootType.OneBullet:
                 this.oneBulletShoot(dt);
                 break;
             case ShootType.TwoBullet:
@@ -95,12 +96,12 @@ export class PlayerCtrl extends Component {
             case ShootType.FiveBullet:
                 this.fiveBulletShoot(dt);
                 break;
+            case ShootType.SevenBullet:
+                this.sevenBulletShoot(dt);
+                break;
         }
         if (this.gm.invincible > 0) {
             this.gm.addInvincible(-dt);
-        }
-        if (this.shootType != ShootType.FiveBullet && this.gm.getLv() >= 40) {
-            this.shootType = ShootType.FiveBullet;
         }
     }
 
@@ -162,10 +163,10 @@ export class PlayerCtrl extends Component {
     }
 
     @property(Prefab)
-    bullet3Prefab: Prefab = null;
+    bullet3Prefab1: Prefab = null;
 
     @property(Prefab)
-    bullet4Prefab: Prefab = null;
+    bullet3Prefab2: Prefab = null;
 
     @property(Node)
     bullet3Position1: Node = null;
@@ -181,21 +182,62 @@ export class PlayerCtrl extends Component {
             const bullet0 = instantiate(this.bullet1Prefab);
             const bullet1 = instantiate(this.bullet2Prefab);
             const bullet2 = instantiate(this.bullet2Prefab);
-            const bullet3 = instantiate(this.bullet3Prefab);
-            const bullet4 = instantiate(this.bullet4Prefab);
+            const bullet3_1 = instantiate(this.bullet3Prefab1);
+            const bullet3_2 = instantiate(this.bullet3Prefab2);
             this.bulletParent.addChild(bullet0);
             this.bulletParent.addChild(bullet1);
             this.bulletParent.addChild(bullet2);
-            this.bulletParent.addChild(bullet3);
-            this.bulletParent.addChild(bullet4);
+            this.bulletParent.addChild(bullet3_1);
+            this.bulletParent.addChild(bullet3_2);
             bullet0.setWorldPosition(this.bullet1Position.worldPosition);
             bullet1.setWorldPosition(this.bullet2Position1.worldPosition);
             bullet2.setWorldPosition(this.bullet2Position2.worldPosition);
-            bullet3.setWorldPosition(this.bullet3Position1.worldPosition);
-            bullet4.setWorldPosition(this.bullet3Position2.worldPosition);
+            bullet3_1.setWorldPosition(this.bullet3Position1.worldPosition);
+            bullet3_2.setWorldPosition(this.bullet3Position2.worldPosition);
         }
     }
-    
+
+    @property(Prefab)
+    bullet4Prefab1: Prefab = null;
+
+    @property(Prefab)
+    bullet4Prefab2: Prefab = null;
+
+    @property(Node)
+    bullet4Position1: Node = null;
+
+    @property(Node)
+    bullet4Position2: Node = null;
+
+    sevenBulletShoot(dt: number) {
+        this.shootTime += dt;
+        if (this.shootTime >= this.shootRate) {
+            AudioMgr.inst.playOneShot(this.twoBulletMus, 1);
+            this.shootTime = 0;
+            const bullet1 = instantiate(this.bullet1Prefab);
+            const bullet2_1 = instantiate(this.bullet2Prefab);
+            const bullet2_2 = instantiate(this.bullet2Prefab);
+            const bullet3_1 = instantiate(this.bullet3Prefab1);
+            const bullet3_2 = instantiate(this.bullet3Prefab2);
+            const bullet4_1 = instantiate(this.bullet4Prefab1);
+            const bullet4_2 = instantiate(this.bullet4Prefab2);
+            this.bulletParent.addChild(bullet1);
+            this.bulletParent.addChild(bullet2_1);
+            this.bulletParent.addChild(bullet2_2);
+            this.bulletParent.addChild(bullet3_1);
+            this.bulletParent.addChild(bullet3_2);
+            this.bulletParent.addChild(bullet4_1);
+            this.bulletParent.addChild(bullet4_2);
+            bullet1.setWorldPosition(this.bullet1Position.worldPosition);
+            bullet2_1.setWorldPosition(this.bullet2Position1.worldPosition);
+            bullet2_2.setWorldPosition(this.bullet2Position2.worldPosition);
+            bullet3_1.setWorldPosition(this.bullet3Position1.worldPosition);
+            bullet3_2.setWorldPosition(this.bullet3Position2.worldPosition);
+            bullet4_1.setWorldPosition(this.bullet4Position1.worldPosition);
+            bullet4_2.setWorldPosition(this.bullet4Position2.worldPosition);
+        }
+    }
+
 
     collider: Collider2D = null;
 
@@ -239,7 +281,7 @@ export class PlayerCtrl extends Component {
             if (this.collider) {
                 this.collider.enabled = false;
             }
-            this.scheduleOnce(function(){
+            this.scheduleOnce(function () {
                 this.gm.gameOver();
             }, 3);
         } else {
@@ -251,22 +293,30 @@ export class PlayerCtrl extends Component {
     collisionReward(otherCollider: Collider2D) {
         AudioMgr.inst.playOneShot(this.getThingMus, 2);
         const rewardCtrlVal = otherCollider.getComponent(RewardCtrl);
-        switch(rewardCtrlVal.rwdType) {
-            case RwdType.TwoBullet:
-                if (this.shootType == ShootType.OneBullet) {
-                    this.shootType = ShootType.TwoBullet;
-                } else if (this.shootType == ShootType.TwoBullet) {
-                    this.shootType = ShootType.ThreeBullet;
-                } else {
-                    if (this.shootRate > 0.2) {
-                        this.shootRate -= 0.05;
-                    } else if (this.shootRate > 0.15) {
-                        this.shootRate -= 0.01;
-                    }
+        switch (rewardCtrlVal.rwdType) {
+            case RwdType.BULLET_SPEED:
+                if (this.shootRate > 0.2) {
+                    this.shootRate -= 0.05;
+                } else if (this.shootRate > 0.15) {
+                    this.shootRate -= 0.01;
                 }
                 break;
-            case RwdType.Bomb: 
+            case RwdType.BOMB:
                 this.gm.addBomb(1);
+                break;
+            case RwdType.BULLET_NUM:
+                if (this.shootType <= 3) {
+                    this.shootType ++;
+                }
+                break;
+            case RwdType.BULLET_PENETRATE:
+                console.log("todo");
+                break;
+            case RwdType.BULLET_BOMB:
+                console.log("todo");
+                break;
+            case RwdType.INVINCIBLE:
+                this.gm.addInvincible(5);
                 break;
         }
 

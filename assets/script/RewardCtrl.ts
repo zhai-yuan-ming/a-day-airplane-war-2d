@@ -2,14 +2,18 @@ import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact } f
 const { ccclass, property } = _decorator;
 
 export enum RwdType{
-    TwoBullet,
-    Bomb
+    BULLET_SPEED,
+    BOMB,
+    BULLET_NUM,
+    BULLET_PENETRATE,
+    BULLET_BOMB,
+    INVINCIBLE
 }
 @ccclass('RewardCtrl')
 export class RewardCtrl extends Component {
 
     @property
-    rwdType: RwdType = RwdType.TwoBullet;
+    rwdType: RwdType = RwdType.BULLET_SPEED;
 
     @property
     speed: number = 150;
