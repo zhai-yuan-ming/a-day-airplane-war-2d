@@ -15,9 +15,6 @@ enum ShootType {
 @ccclass('PlayerCtrl')
 export class PlayerCtrl extends Component {
 
-    @property
-    public penetrate: boolean = false;
-
     @property(AudioClip)
     getThingMus: AudioClip = null;
 
@@ -310,13 +307,16 @@ export class PlayerCtrl extends Component {
                 }
                 break;
             case RwdType.BULLET_PENETRATE:
-                console.log("todo");
+                this.gm.setBulletHp(5);
                 break;
             case RwdType.BULLET_BOMB:
-                console.log("todo");
+                this.gm.setCanExplosion(true);
                 break;
             case RwdType.INVINCIBLE:
                 this.gm.addInvincible(5);
+                break;
+            case RwdType.HP:
+                this.gm.addHp(1);
                 break;
         }
 

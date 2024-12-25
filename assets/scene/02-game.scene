@@ -1215,7 +1215,6 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "penetrate": false,
     "getThingMus": {
       "__uuid__": "151c875a-829a-4e11-948e-3fe4604b9bae",
       "__expectedType__": "cc.AudioClip"
@@ -1559,15 +1558,20 @@
       {
         "__uuid__": "a2690b44-3e03-4f03-9b17-25f75c74f47a",
         "__expectedType__": "cc.Prefab"
+      },
+      {
+        "__uuid__": "be1f9e23-ddcf-422a-a1eb-a3323601d073",
+        "__expectedType__": "cc.Prefab"
       }
     ],
     "rewardRate": [
-      40,
+      30,
       10,
       10,
       5,
       5,
-      30
+      30,
+      10
     ],
     "enemyList": [],
     "_id": "5540/uneRBwrS8xJBiqVQ/"
@@ -1638,6 +1642,18 @@
     },
     "useBombMus": {
       "__uuid__": "9c55eef3-3d07-4dee-b82d-844b78b33aa2",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "canExplosion": false,
+    "bulletParent": {
+      "__id__": 33
+    },
+    "bulletPrefab": {
+      "__uuid__": "3044cbd4-b88a-45bc-85e7-7090d0ab3210",
+      "__expectedType__": "cc.Prefab"
+    },
+    "oneBulletMus": {
+      "__uuid__": "600918d8-7329-47de-8493-d8ba1a04a219",
       "__expectedType__": "cc.AudioClip"
     },
     "_id": "0c4sicXnFNtp4qaDgO3MXF"

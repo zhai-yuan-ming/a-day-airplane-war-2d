@@ -1,4 +1,4 @@
-import { _decorator, AudioClip, Component, director, Node } from 'cc';
+import { _decorator, AudioClip, Component, director, instantiate, Node, Prefab, Vec3 } from 'cc';
 import { PlayerCtrl } from './PlayerCtrl';
 import { AudioMgr } from './AudioMgr';
 const { ccclass, property } = _decorator;
@@ -136,6 +136,56 @@ export class GameManager extends Component {
         if (enemy) {
             this.node.emit("removeEnemy", enemy);
         }
+    }
+
+    private bulletHp: number = 1;
+
+    public getBulletHp() {
+        return this.bulletHp;
+    }
+
+    public setBulletHp(hp: number) {
+        this.bulletHp = hp;
+    }
+
+    @property
+    canExplosion: boolean = false;
+
+    public getCanExplosion() {
+        return this.canExplosion;
+    }
+
+    public setCanExplosion(can: boolean) {
+        this.canExplosion = can;
+    }
+
+    @property(Node)
+    bulletParent: Node = null;
+    
+    @property(Prefab)
+    bulletPrefab: Prefab = null;
+
+    @property(AudioClip)
+    oneBulletMus: AudioClip = null;
+
+    explosion(position: Vec3) {
+        AudioMgr.inst.playOneShot(this.oneBulletMus, 1);
+        const bullet1 = instantiate(this.bulletPrefab);
+        this.bulletParent.addChild(bullet1);
+        bullet1.setRotationFromEuler(0, 0, 45);
+        bullet1.setPosition(position);
+        const bullet2 = instantiate(this.bulletPrefab);
+        this.bulletParent.addChild(bullet2);
+        bullet2.setPosition(position);
+        bullet2.setRotationFromEuler(0, 0, 135);
+        const bullet3 = instantiate(this.bulletPrefab);
+        this.bulletParent.addChild(bullet3);
+        bullet3.setPosition(position);
+        bullet3.setRotationFromEuler(0, 0, 225);
+        const bullet4 = instantiate(this.bulletPrefab);
+        this.bulletParent.addChild(bullet4);
+        bullet4.setPosition(position);
+        bullet4.setRotationFromEuler(0, 0, 315);
     }
 }
 

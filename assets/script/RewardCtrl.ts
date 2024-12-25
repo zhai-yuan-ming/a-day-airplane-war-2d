@@ -7,7 +7,8 @@ export enum RwdType{
     BULLET_NUM,
     BULLET_PENETRATE,
     BULLET_BOMB,
-    INVINCIBLE
+    INVINCIBLE,
+    HP
 }
 @ccclass('RewardCtrl')
 export class RewardCtrl extends Component {

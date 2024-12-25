@@ -1,9 +1,8 @@
 import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact} from 'cc';
-import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
-@ccclass('Bullet')
-export class Bullet extends Component {
+@ccclass('BaseBullet')
+export class BaseBullet extends Component {
 
     @property
     hp: number = 1;
@@ -11,14 +10,8 @@ export class Bullet extends Component {
     @property
     speed: number = 500;
 
-    private canExplosion: boolean = false;
-
-    private gm: GameManager = null;
 
     protected start(): void {
-        this.gm = GameManager.getInstance();
-        this.hp = this.gm.getBulletHp();
-        this.canExplosion = this.gm.getCanExplosion();
         // 注册单个碰撞体的回调函数
         let collider = this.getComponent(Collider2D);
         if (collider) {
@@ -28,13 +21,6 @@ export class Bullet extends Component {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         this.hp -= 1;
-    }
-
-    update(deltaTime: number) {
-        if (this.canExplosion && this.hp < this.gm.getBulletHp()) {
-            this.canExplosion = false;
-            this.gm.explosion(this.node.position);
-        }
         if (this.hp <= 0) {
             let collider = this.getComponent(Collider2D);
             if (collider) {
@@ -44,14 +30,19 @@ export class Bullet extends Component {
                 this.node.destroy();
             }, 0);
         }
+    }
+
+    update(deltaTime: number) {
         const postion = this.node.position;
-        const rotation = this.node.getRotation();
-        if (rotation.z > 0) {
+        const rotation = this.node.rotation;
+        if (rotation.z > 0.38 && rotation.w > 0.92) {
             this.node.setPosition(postion.x - this.speed * deltaTime, postion.y + this.speed * deltaTime, postion.z);
-        } else if (rotation.z < 0) {
+        } else if (rotation.z > 0.92 && rotation.w > 0.38) {
+            this.node.setPosition(postion.x - this.speed * deltaTime, postion.y - this.speed * deltaTime, postion.z);
+        } else if (rotation.z < -0.92 && rotation.w > 0.38) {
+            this.node.setPosition(postion.x + this.speed * deltaTime, postion.y - this.speed * deltaTime, postion.z);
+        } else if (rotation.z > 0.38 && rotation.w < -0.92) {
             this.node.setPosition(postion.x + this.speed * deltaTime, postion.y + this.speed * deltaTime, postion.z);
-        } else {
-            this.node.setPosition(postion.x, postion.y + this.speed * deltaTime, postion.z);
         }
         if (postion.x > 240 || postion.x < -240 || postion.y > 440 || postion.y < -440) {
             this.node.destroy();
