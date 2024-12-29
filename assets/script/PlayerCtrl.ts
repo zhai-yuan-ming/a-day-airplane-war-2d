@@ -3,6 +3,7 @@ import { EnemyCtrl } from './EnemyCtrl';
 import { RewardCtrl, RwdType } from './RewardCtrl';
 import { GameManager } from './GameManager';
 import { AudioMgr } from './AudioMgr';
+import { Boss1Ctrl } from './Boss1Ctrl';
 const { ccclass, property } = _decorator;
 
 enum ShootType {
@@ -263,7 +264,8 @@ export class PlayerCtrl extends Component {
             return;
         }
         const enemyCtrlVal = otherCollider.getComponent(EnemyCtrl);
-        if (enemyCtrlVal) {
+        const boss1CtrlVal = otherCollider.getComponent(Boss1Ctrl);
+        if (enemyCtrlVal || boss1CtrlVal) {
             this.collisionEnemy();
             return;
         }

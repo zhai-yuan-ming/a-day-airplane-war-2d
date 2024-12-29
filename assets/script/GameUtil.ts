@@ -29,6 +29,31 @@ export class GameUtil {
         }
         return null; // 未命中任何值的兜底处理
     }
+
+    // 获取角度
+    public getAngle(target: Node, node: Node): number {
+        let y = target.worldPosition.y - node.worldPosition.y;
+        let x = target.worldPosition.x - node.worldPosition.x;
+        let radian = Math.atan2(y, x);
+        let angle = this.radianToAngle(radian);
+        if (angle >= 360) {
+            angle -= 360;
+        }
+        if (angle < 0) {
+            angle += 360;
+        }
+        return angle;
+    }
+
+    // 弧度转角度
+    public radianToAngle(radian: number): number {
+        return 360 * radian/(2 * Math.PI);
+    }
+
+    // 角度转弧度
+    public angleToRadian(angle: number): number {
+        return angle * 2 * Math.PI / 360;
+    }
 }
 
 

@@ -58,19 +58,13 @@ export class EnemyCtrl extends Component {
         const rotation = this.node.getRotation();
         if (rotation.z > 0) {
             this.node.setPosition(postion.x + move, postion.y, postion.z);
-            if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
-                this.enemyDestroy();
-            }
         } else if (rotation.z == 0) {
             this.node.setPosition(postion.x, postion.y - move, postion.z);
-            if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
-                this.enemyDestroy();
-            }
         } else if (rotation.z < 0) {
             this.node.setPosition(postion.x - move, postion.y, postion.z);
-            if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
-                this.enemyDestroy();
-            }
+        }
+        if (postion.y < -600 || postion.y > 600 || postion.x < -400 || postion.x > 400) {
+            this.enemyDestroy();
         }
     }
 

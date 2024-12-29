@@ -87,27 +87,26 @@ export class EnemyManager extends Component {
     }
 
     startAllSchedule() {
-        this.schedule(this.enemy0Create, this.enemy0CreateRate);
-        this.schedule(this.enemy1Create, this.enemy1CreateRate);
-        this.schedule(this.enemy2Create, this.enemy2CreateRate);
-        this.schedule(this.rewardCreate, this.rewardCreateRate);
+        if (this.enemy0CreateRate > 0) this.schedule(this.enemy0Create, this.enemy0CreateRate);
+        if (this.enemy1CreateRate > 0) this.schedule(this.enemy1Create, this.enemy1CreateRate);
+        if (this.enemy2CreateRate > 0) this.schedule(this.enemy2Create, this.enemy2CreateRate);
+        if (this.rewardCreateRate > 0) this.schedule(this.rewardCreate, this.rewardCreateRate);
         this.start345();
         this.start678();
     }
 
     start345() {
         if (this.gm.getLv() < 40) return;
-        this.schedule(this.enemy3Create, this.enemy3CreateRate);
-        this.schedule(this.enemy4Create, this.enemy4CreateRate);
-        this.schedule(this.enemy5Create, this.enemy5CreateRate);
-
+        if (this.enemy3CreateRate > 0) this.schedule(this.enemy3Create, this.enemy3CreateRate);
+        if (this.enemy4CreateRate > 0) this.schedule(this.enemy4Create, this.enemy4CreateRate);
+        if (this.enemy5CreateRate > 0) this.schedule(this.enemy5Create, this.enemy5CreateRate);
     }
 
     start678() {
         if (this.gm.getLv() < 80) return;
-        this.schedule(this.enemy6Create, this.enemy6CreateRate);
-        this.schedule(this.enemy7Create, this.enemy7CreateRate);
-        this.schedule(this.enemy8Create, this.enemy8CreateRate);
+        if (this.enemy6CreateRate > 0) this.schedule(this.enemy6Create, this.enemy6CreateRate);
+        if (this.enemy7CreateRate > 0) this.schedule(this.enemy7Create, this.enemy7CreateRate);
+        if (this.enemy8CreateRate > 0) this.schedule(this.enemy8Create, this.enemy8CreateRate);
     }
 
     stop345() {

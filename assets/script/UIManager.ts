@@ -36,6 +36,9 @@ export class UIManager extends Component {
     @property(AudioClip)
     btnMus: AudioClip = null;
 
+    @property(Node)
+    bloodUi: Node = null;
+
     gm: GameManager = null;
 
     start() {
@@ -86,6 +89,7 @@ export class UIManager extends Component {
     }
 
     gameOver(bestScore:number, curScore:number) {
+        if (this.bloodUi) this.bloodUi.active = false;
         this.refreshBestScore(bestScore, curScore);
         this.gameoverUi.active = true;
         if (bestScore < curScore) {

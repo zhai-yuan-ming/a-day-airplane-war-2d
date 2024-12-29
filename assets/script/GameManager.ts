@@ -39,6 +39,8 @@ export class GameManager extends Component {
 
     start() {
         AudioMgr.inst.play(this.gameMusic, 0.2);
+        // 初始化玩家生命、子弹、炸弹数量、分数
+
     }
 
     update(deltaTime: number) {
